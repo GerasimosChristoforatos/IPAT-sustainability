@@ -63,7 +63,7 @@ frontier:
   tau: 0.9
   tau_robustness: 0.95
   bootstrap_reps: 2000
-  labelled_countries: [USA, CRI, FIN, DEU, CHN, IND, NOR, MEX, GTM, JPN]
+  labelled_countries: [USA, CRI, FIN, CHN, IND, NOR, MEX, GTM, JPN]
 
 montecarlo:
   draws: 10000
