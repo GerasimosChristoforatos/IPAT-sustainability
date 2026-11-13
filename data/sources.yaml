@@ -1,0 +1,73 @@
+# Register of every external input. status: verified = read by us from the cited
+# source; pending = value not yet read from the source (must not be used; load.py refuses).
+# Retrieval dates are ISO. "type": data | derived | stretched.
+
+owid_co2:
+  citation: "Ritchie, Rosado & Roser, Our World in Data CO2 and Greenhouse Gas Emissions dataset"
+  url: https://github.com/owid/co2-data
+  commit: 22d9a01321ddec951b36f2bfc66e05dc6ad50ad8
+  file: data/raw/owid-co2-data.csv
+  sha256: 300fb68fe6b0d514ed7f5cf773df77d7e24a495438d84b76e2f39eba1584a0f7
+  codebook: data/raw/owid-co2-codebook.csv
+  retrieved: 2026-11-13
+  licence: CC BY 4.0
+  status: verified
+  variables:
+    population: {unit: persons, upstream: "OWID population, various sources (2024)"}
+    gdp: {unit: "international-$ at 2011 prices", upstream: "Maddison Project Database 2023 (Bolt & van Zanden)"}
+    consumption_co2: {unit: "Mt CO2/yr", upstream: "Global Carbon Budget (2026); fossil CO2, excludes land-use change"}
+    co2_including_luc: {unit: "Mt CO2/yr", upstream: "Global Carbon Budget (2026)"}
+  notes: >
+    2022 is the latest year with GDP. EU27 GDP is not provided as an aggregate and is
+    summed over the 27 members (all present); member sums of population and consumption
+    CO2 equal the OWID EU27 aggregate to 6 significant figures (checked in tests).
+
+igcc_2025_rcb:
+  citation: "Forster et al. (2026), Indicators of Global Climate Change 2025, Earth Syst. Sci. Data 18, 3889"
+  doi: 10.5194/essd-18-3889-2026
+  url: https://github.com/ClimateIndicator/data
+  commit: d9726573dccd9381652432b58b38f670af493c1c
+  file: data/raw/co2-budget_global_igcc-assessment_synthesis_table_IGCC-2025a.csv
+  sha256: 146caa522a9be24ee9cf3b768f0e320944a79e4dadf6b68d6c659ee3fceac4b2
+  dataset: "Remaining carbon budgets in 0.1 degC increments (R. Lamboll)"
+  unit: "Gt CO2 from 1 Jan 2026"
+  retrieved: 2026-11-13
+  status: verified
+  variant_choice: >
+    The file holds three parameter variants (1.5 degC, 50 %: 98, 134, 188 Gt). We use
+    'magicc_hdtbasis1.24_zecsd0.0' (134 Gt) because it is the one that rounds to the
+    paper's headline of 130 Gt for 1.5 degC at 50 % from the start of 2026. The headline
+    was confirmed only via secondary pages (University of Leeds news release; Copernicus
+    indicators page, found by web search 2026-11-13), because essd.copernicus.org is not
+    reachable from the build environment. TO CONFIRM against the paper's RCB table.
+  conversion: "Unrounded file values are used in computation; linear interpolation between published likelihoods for the Monte Carlo."
+
+velez_henao_2026:
+  citation: "Velez-Henao, Streeck, Kikstra & Pauliuk (2026), Ecological Economics 240, 108819"
+  doi: 10.1016/j.ecolecon.2025.108819
+  retrieved: 2026-11-13
+  access: "PDF supplied by the author of this study; not redistributed"
+  status: verified
+  values:
+    dls_ghg_recent_tech: {value: 29, unit: "Gt CO2e/yr", year: 2015, where: "Sect. 3.5, first paragraph", type: data}
+    dls_ghg_efficient:   {value: 14, unit: "Gt CO2e/yr", year: 2015, where: "Sect. 3.5 last paragraph; Sect. 4.1", type: data}
+    current_ghg:         {value: 54, unit: "Gt CO2e/yr", year: 2015, where: "Sect. 4.1 (citing Forster et al. 2024)", type: data}
+    dls_materials_recent_tech: {value: 35, unit: "Gt/yr", year: 2015, where: "Sect. 3.5", type: data}
+    dls_materials_efficient:   {value: 24, unit: "Gt/yr", year: 2015, where: "Sect. 4.1", type: data}
+    current_materials:   {value: 91, unit: "Gt/yr (RMC)", year: 2015, where: "Sect. 4.1 (citing UNEP IRP 2024)", type: data}
+    population:          {value: 7.3e9, unit: persons, year: 2015, where: "Sect. 4.1", type: data}
+  conversion: >
+    phi = DLS requirement / current total, same year and unit (population cancels).
+    Recent-technology scenario is the route estimate; the efficient scenario embeds
+    low-carbon electricity (a change in T) and is shown for reference only.
+
+# ---- pending: files to be supplied in data/raw/ (hosts blocked from build environment) ----
+pwc_nzei_2024:      {status: pending, needs: "PwC Net Zero Economy Index 2024 report PDF"}
+un_wpp_2024:        {status: pending, needs: "WPP2024 compact xlsx or Key Messages PDF"}
+whr_2024:           {status: pending, needs: "WHR 2024 Data for Figure 2.1 (xls/xlsx)"}
+whr_2026:           {status: pending, needs: "WHR 2026 Data for Figure 2.1 (xlsx)"}
+kikstra_2021:       {status: pending, needs: "PDF, doi:10.1088/1748-9326/ac1c27"}
+hickel_sullivan_2024: {status: pending, needs: "PDF, World Development Perspectives"}
+millward_hopkins_2025: {status: pending, needs: "PDF, doi:10.1016/S2542-5196(25)00115-9"}
+chancel_2022:       {status: pending, needs: "PDF, doi:10.1038/s41893-022-00955-z"}
+iza_dp_18662:       {status: pending, needs: "PDF"}

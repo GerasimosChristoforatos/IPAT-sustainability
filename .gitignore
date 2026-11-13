@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+# large pinned download; fetched and hash-checked by `make fetch`
+data/raw/owid-co2-data.csv
+# copyrighted papers are read locally, never committed
+data/raw/papers/

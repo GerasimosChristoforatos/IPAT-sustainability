@@ -1,0 +1,60 @@
+# All modelling choices live here. Literature/data VALUES live in data/sources.yaml
+# and are referenced by key, so no number is defined twice.
+
+years:
+  activity: 2022          # latest year with both Maddison GDP and consumption CO2 (OWID)
+  t_scenario_end: 2050    # T scenarios are endpoints in this year
+  budget_base: 2026       # remaining carbon budget counted from 1 Jan of this year
+
+units:                    # reference units for the validation identity
+  US:    {owid_country: "United States"}
+  EU27:  {owid_country: "European Union (27)", gdp_from_members: true}
+  World: {owid_country: "World"}
+
+eu27_iso: [AUT, BEL, BGR, HRV, CYP, CZE, DNK, EST, FIN, FRA, DEU, GRC, HUN, IRL,
+           ITA, LVA, LTU, LUX, MLT, NLD, POL, PRT, ROU, SVK, SVN, ESP, SWE]
+
+t_scenarios:              # annual rate of decline of T, applied from years.activity
+  BAU:       {rate_source: pwc_nzei_2024.rate_historical}
+  Ambitious: {rate_source: pwc_nzei_2024.rate_2c}
+  Extreme:   {rate_source: pwc_nzei_2024.rate_best_g20_single_year}
+
+best_national_t:          # "world at the best current national T" anchor (decision D4)
+  min_population: 1.0e6   # persons
+  min_a_relative_to_world: 1.0   # A >= world mean; excludes low T due to energy poverty
+  report_unrestricted: true
+
+carbon_budget:
+  igcc_variant: "magicc_hdtbasis1.24_zecsd0.0"   # variant matching the paper headline, see sources.yaml
+  targets_degC: [1.5, 1.7, 2.0]
+  likelihood_central: 0.5
+  likelihood_range: [0.33, 0.67]
+  horizon_years: 50
+  horizon_sensitivity_years: [25, 100]
+
+population:
+  now_source: owid_co2.population_world_activity_year
+  peak_source: un_wpp_2024.peak_population
+
+floor:
+  central_rule: median    # of route central values
+  range_rule: minmax      # of route central values
+  conversion: "A_ess = phi * A_world; phi = route floor / world mean, in the route's native unit and year"
+
+frontier:
+  ladder_main: whr_2024   # 2021-2023 average, centred on activity year
+  ladder_robustness: whr_2026
+  tau: 0.9
+  tau_robustness: 0.95
+  bootstrap_reps: 2000
+  labelled_countries: [USA, CRI, FIN, DEU, CHN, IND, NOR, MEX]
+
+montecarlo:
+  draws: 10000
+  seed: 20261113
+  horizon_triangular_years: [25, 50, 100]
+  a_ess_distribution: triangular   # (min, central, max) from RQ2
+  pooled_rate_uniform: true        # one pooled row: r ~ U(BAU rate, Extreme rate)
+  interval: [0.05, 0.95]
+
+seed: 20261113
