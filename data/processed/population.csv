@@ -1,0 +1,3 @@
+label,year,P_persons,type,source
+now,2022,8021407196.0,data,owid_co2
+peak,2084,10289315243.0,data,un_wpp_2024
