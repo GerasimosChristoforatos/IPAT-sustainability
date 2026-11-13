@@ -108,5 +108,56 @@ class TestClosedForms(unittest.TestCase):
         self.assertAlmostEqual(model.years_to_exhaustion_static(500.0, 40.0), 12.5)
 
 
+class TestMonteCarlo(unittest.TestCase):
+    def test_vectorised_matches_scalar(self):
+        import numpy as np
+        import montecarlo
+        A_ess = np.array([4000.0, 6000.0, 9000.0])
+        I_pl = np.array([10.0, 3.0, 20.0]) * model.KG_PER_GT
+        v = montecarlo.required_dem_vec(50_000.0, A_ess, I_pl, 8.0e9, 0.1)
+        for i in range(3):
+            self.assertEqual(v[i], model.required_dem(50_000.0, A_ess[i], I_pl[i], 8.0e9, 0.1)[0])
+
+
+class TestFrontier(unittest.TestCase):
+    def test_lp_quantile_regression_matches_statsmodels(self):
+        import numpy as np
+        import frontier
+        lad = pd.read_csv(ROOT / "data" / "processed" / "ladder.csv")
+        s = frontier.sample(lad, CFG["frontier"]["ladder_year_main"])
+        tau = CFG["frontier"]["tau"]
+        lp = frontier.qr_params(np.log(s[frontier.A_COL].values), s.ladder.values, tau)
+        irls = frontier.fit_qr(s, tau).params
+        # compare the objective (check loss), which is unique even if the minimiser is not
+        def loss(b):
+            r = s.ladder.values - b[0] - b[1] * np.log(s[frontier.A_COL].values)
+            return float(np.sum(np.where(r >= 0, tau * r, (tau - 1) * r)))
+        self.assertLessEqual(loss(lp), loss(irls) + 1e-9)
+        self.assertAlmostEqual(lp[1], irls[1], delta=0.02)
+
+    def test_frontier_inverse(self):
+        import frontier
+        self.assertAlmostEqual(frontier.frontier_A(1.0, 0.5, 6.0), math.exp(10.0))
+        self.assertEqual(frontier.frontier_A(1.0, -0.1, 6.0), math.inf)
+
+
+class TestDistribution(unittest.TestCase):
+    def test_chancel_groups_reproduce_world_mean(self):
+        import floor
+        g = floor.chancel_groups(load.load_sources())
+        self.assertAlmostEqual(g.pop_share.sum(), 1.0)
+        mean = (g.pop_share * g.mean_tCO2e).sum()
+        self.assertAlmostEqual(mean, load.load_sources()["chancel_2022"]["values"]["world_mean"]["value"], delta=0.05)
+
+    def test_group_mean_estimate_is_lower_bound(self):
+        """Jensen: splitting a group into unequal halves cannot lower above-floor emissions."""
+        import numpy as np
+        import floor
+        f = 2.0
+        whole = floor._split(np.array([3.0]), f)[1]
+        halves = floor._split(np.array([1.0, 5.0]), f)[1]
+        self.assertGreaterEqual(halves, whole)
+
+
 if __name__ == "__main__":
     unittest.main()

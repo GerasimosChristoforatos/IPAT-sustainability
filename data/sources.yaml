@@ -37,9 +37,10 @@ igcc_2025_rcb:
     The file holds three parameter variants (1.5 degC, 50 %: 98, 134, 188 Gt). We use
     'magicc_hdtbasis1.24_zecsd0.0' (134 Gt) because it is the one that rounds to the
     paper's headline of 130 Gt for 1.5 degC at 50 % from the start of 2026. The headline
-    was confirmed only via secondary pages (University of Leeds news release; Copernicus
-    indicators page, found by web search 2026-11-13), because essd.copernicus.org is not
-    reachable from the build environment. TO CONFIRM against the paper's RCB table.
+    Confirmed against Table 8 of the paper (Sect. 9; values rounded to 10 Gt:
+    1.5 degC 210/130/80, 1.7 degC 650/500/390, 2.0 degC 1310/1050/860 at 33/50/67 %),
+    which the selected variant reproduces at every published likelihood. Table 8 states
+    that the probability covers TCRE uncertainty only.
   conversion: "Unrounded file values are used in computation; linear interpolation between published likelihoods for the Monte Carlo."
 
 velez_henao_2026:
@@ -61,13 +62,130 @@ velez_henao_2026:
     Recent-technology scenario is the route estimate; the efficient scenario embeds
     low-carbon electricity (a change in T) and is shown for reference only.
 
-# ---- pending: files to be supplied in data/raw/ (hosts blocked from build environment) ----
-pwc_nzei_2024:      {status: pending, needs: "PwC Net Zero Economy Index 2024 report PDF"}
-un_wpp_2024:        {status: pending, needs: "WPP2024 compact xlsx or Key Messages PDF"}
-whr_2024:           {status: pending, needs: "WHR 2024 Data for Figure 2.1 (xls/xlsx)"}
-whr_2026:           {status: pending, needs: "WHR 2026 Data for Figure 2.1 (xlsx)"}
-kikstra_2021:       {status: pending, needs: "PDF, doi:10.1088/1748-9326/ac1c27"}
-hickel_sullivan_2024: {status: pending, needs: "PDF, World Development Perspectives"}
-millward_hopkins_2025: {status: pending, needs: "PDF, doi:10.1016/S2542-5196(25)00115-9"}
-chancel_2022:       {status: pending, needs: "PDF, doi:10.1038/s41893-022-00955-z"}
-iza_dp_18662:       {status: pending, needs: "PDF"}
+
+whr_2026:
+  citation: "Helliwell, Layard, Sachs, De Neve, Aknin & Wang (eds.) (2026), World Happiness Report 2026, Data for Figure 2.1"
+  url: https://www.worldhappiness.report/data-sharing/
+  file: data/raw/WHR26_Data_Figure_2.1.xlsx
+  sha256: 576e382655cec3ae704a0b41cd2c04465b87cd84b7f131a0c4fa26d41f6d8028
+  retrieved: 2026-11-13
+  access: "file supplied by the study author (host blocked from build environment)"
+  status: verified
+  variables:
+    "Life evaluation (3-year average)": {unit: "Cantril ladder, 0-10", type: data}
+  notes: >
+    One sheet, report years 2011-2025; 'Year' is the last year of the three-year window.
+    Year 2023 (window 2021-2023) reproduces the WHR 2024 published scores (Finland 7.741,
+    United States 6.725, Costa Rica 6.955) and is centred on the activity year 2022; it is
+    the main ladder. Year 2025 (2023-2025) is the robustness row.
+
+un_wpp_2024:
+  citation: "United Nations DESA Population Division (2024), World Population Prospects 2024, Online Edition, File SA1/GEN/01"
+  url: https://population.un.org/wpp/downloads
+  file: data/raw/WPP2024_SA1_GEN_F01_DEMOGRAPHIC_INDICATORS.xlsx
+  sha256: 4f1d9e732452ec66fc8da0ec563007e68066d905e82801cd8bad72ab9f6b5d15
+  retrieved: 2026-11-13
+  licence: CC BY 3.0 IGO
+  status: verified
+  variables:
+    "Total Population, as of 1 July (thousands)": {unit: "thousand persons", variant: "Estimates / Medium", type: data}
+  conversion: >
+    The special-aggregates file has no World row. World = 'More developed regions'
+    (location 901) + 'Less developed regions' (902), which partition the world. Check:
+    the 2022 sum (8,021,407 thousand) equals the OWID world population. Peak = maximum of
+    the annual series (10,289,315 thousand in 2084), computed in load.py.
+
+pwc_nzei_2024:
+  citation: "PwC (2024), Net Zero Economy Index 2024"
+  url: https://www.pwc.ie/issues/environmental-social-governance-esg/net-zero-economy-index.html
+  retrieved: 2026-11-13
+  access: "PDF print of the PwC Ireland report page, supplied by the study author; not redistributed"
+  status: partially verified
+  values:
+    rate_2023: {value: 0.0102, unit: "per year", where: "opening paragraph", type: data, verified: true}
+    rate_1p5c: {value: 0.204, unit: "per year", where: "opening paragraph", type: data, verified: true}
+  notes: >
+    Metric: energy-related CO2 per unit of GDP, production-based; not our consumption-based T.
+    The supplied file does NOT contain the three scenario rates used here (1.5 %, 6.9 %,
+    11.5 %). They are therefore treated as scenario ASSUMPTIONS fixed in config.yaml, taken
+    from the study brief. Web-search snippets (2026-11-13; PwC UK and PwC Ireland press
+    releases) corroborate 6.9 % for 2 degC and 'no G20 country above 11.5 % since 2000';
+    they give the 2000-2023 average as 1.43 % (not 1.5 %), and the full report reportedly
+    gives the largest G20 single-year rate as 11.08 % (France, 2014). Not read by us in a
+    primary document. For comparison, world consumption-based T in our own data fell by
+    1.76 %/yr between 2000 and 2022 (derived from owid_co2).
+
+kikstra_2021:
+  citation: "Kikstra, Mastrucci, Min, Riahi & Rao (2021), Decent living gaps and energy needs around the world, Environ. Res. Lett. 16, 095006"
+  doi: 10.1088/1748-9326/ac1c27
+  retrieved: 2026-11-13
+  access: "open access; PDF supplied by the study author"
+  status: verified
+  values:
+    dle_per_cap: {value: 17, unit: "GJ/cap/yr final energy", year: 2050, where: "Sect. 3.2.2 ('156 EJ/yr ... or ~17 GJ/yr')", type: data}
+    dle_region_low: {value: 9, unit: "GJ/cap/yr", where: "Sect. 3.2.2 (South Asia)", type: data}
+    dle_region_high: {value: 36, unit: "GJ/cap/yr", where: "Sect. 3.2.2 (North America)", type: data}
+
+millward_hopkins_2025:
+  citation: "Millward-Hopkins, Hickel & Nag (2025), Is growth in consumption occurring where it is most needed?, Lancet Planet. Health 9, e503-10"
+  doi: 10.1016/S2542-5196(25)00115-9
+  retrieved: 2026-11-13
+  access: "open access (CC BY 4.0); PDF supplied by the study author"
+  status: verified
+  values:
+    dle_global_avg: {value: 22.0, unit: "GJ/cap/yr final energy", where: "Table, minimum DLS requirements, global average", type: data}
+    dle_low: {value: 17.0, unit: "GJ/cap/yr", where: "Table, range", type: data}
+    dle_high: {value: 30.0, unit: "GJ/cap/yr", where: "Table, range", type: data}
+    current_final_energy: {value: 55.0, unit: "GJ/cap/yr", year: 2015, where: "Table, current levels, global average", type: data}
+    dlm: {value: 4.6, unit: "t/cap/yr material footprint", where: "Table; Methods (from Velez-Henao & Pauliuk 2023)", type: data}
+    current_materials: {value: 12.0, unit: "t/cap/yr", year: 2019, where: "Table, current levels, global average", type: data}
+  notes: "DLE is the current-technology scenario of Millward-Hopkins (2022); DLM is from Velez-Henao & Pauliuk (2023)."
+
+hickel_sullivan_2024:
+  citation: "Hickel & Sullivan (2024), How much growth is required to achieve good lives for all?, World Development Perspectives 35, 100612"
+  doi: 10.1016/j.wdp.2024.100612
+  retrieved: 2026-11-13
+  access: "open access; PDF supplied by the study author"
+  status: verified
+  values:
+    share_headline: {value: 0.30, unit: "share of current global resource and energy use", where: "Abstract", type: data}
+    share_energy_low: {value: 0.30, unit: share, where: "Sect. 4: 125-183 EJ = 30-44 % of 418 EJ (2019)", type: data}
+    share_energy_high: {value: 0.44, unit: share, where: "Sect. 4", type: data}
+    share_materials_low: {value: 0.29, unit: share, where: "Sect. 4: 28-40 Gt = 29-42 % of 95 Gt (2019)", type: data}
+    share_materials_high: {value: 0.42, unit: share, where: "Sect. 4", type: data}
+    population: {value: 8.5e9, unit: persons, year: 2050, where: "Abstract; Sect. 4", type: data}
+    reference_year: {value: 2019, unit: year, where: "Sect. 4", type: data}
+  notes: >
+    A synthesis, not an independent model: energy from Millward-Hopkins (2022), materials
+    from Velez-Henao & Pauliuk (2023). Shares are totals for 8.5 bn people relative to the
+    2019 world total, so the per-person ratio is share x P_2019 / 8.5 bn.
+
+chancel_2022:
+  citation: "Chancel (2022), Global carbon inequality over 1990-2019, Nature Sustainability 5, 931-938"
+  doi: 10.1038/s41893-022-00955-z
+  retrieved: 2026-11-13
+  access: "PDF supplied by the study author; not redistributed"
+  status: verified
+  unit: "t CO2e per person per year, 2019; all GHG, includes emissions attributed to investments"
+  values:
+    bottom20: {value: 0.7, pop_share: 0.20, where: "Table 1", type: data}
+    next30: {value: 1.8, pop_share: 0.30, where: "Table 1", type: data}
+    middle40: {value: 6.1, pop_share: 0.40, where: "Main text ('middle 40% emit 6.1 t'); Table 1 rounds to 6", type: data}
+    top10: {value: 28.7, pop_share: 0.10, where: "Main text; Table 1 rounds to 29", type: data}
+    top1: {value: 101, pop_share: 0.01, where: "Main text; Table 1", type: data}
+    world_mean: {value: 6.0, where: "Main text ('about 6 tonnes')", type: data}
+  conversion: "Top 10 % excluding top 1 % derived as (0.10*28.7 - 0.01*101)/0.09."
+
+iza_dp_18662:
+  citation: "Oparina, Clark & Layard (2026), The Easterlin Paradox at 50, IZA Discussion Paper 18662"
+  url: https://www.iza.org/publications/dp
+  retrieved: 2026-11-13
+  access: "PDF supplied by the study author"
+  status: verified
+  values:
+    slope_individual: {value: 0.4, unit: "ladder points per unit of log income", where: "Abstract", type: data}
+    slope_cross_country_crude: {value: 0.6, unit: "ladder points per unit of log GDP per capita", where: "Abstract", type: data}
+  notes: >
+    Benchmark only; not a model input. The body (Sect. 3, Table 3.1) reports an individual
+    coefficient of 0.568 on log income and describes 0.4 as the effect of doubling income,
+    which differs from the abstract's wording.
