@@ -1,14 +1,25 @@
 # IPAT-sustainability
 
-A small, reproducible study that quantifies an extended IPAT identity,
+**The idea.** Classic IPAT (impact = population × affluence × technology) treats affluence as
+one block. We split it into a sufficiency floor Aᵉˢˢ and consumption above it, Aᵐᵃᵗ, and add
+a fourth lever, dematerialism Aᵈᵉᵐ, which divides only the part above the floor:
 
 ```
-I = P × ( Aᵉˢˢ + Aᵐᵃᵗ / Aᵈᵉᵐ ) × T ,   I ≤ Iᵖˡ
+I = P × ( Aᵉˢˢ + Aᵐᵃᵗ / Aᵈᵉᵐ ) × T
 ```
 
-for CO₂. It supports a Perspective article. Read `REPORT.md` for results and limitations.
+Using public data, we estimate four things:
 
-## Reproduce
+- the CO₂ cost of a decent life for all;
+- how much of today's CO₂ is consumption above the floor;
+- how fast carbon intensity T would have to fall on its own;
+- how much dematerialism is already observed across countries, and whether the two levers
+  together fit a carbon budget.
+
+The study supports a Perspective article. Results are in `REPORT.md`, quotable numbers in
+`results/key_numbers.md`.
+
+## Run
 
 ```bash
 pip install -r requirements.txt
@@ -18,32 +29,32 @@ pip install -r requirements.txt
 make all
 ```
 
-`make all` downloads the pinned OWID file, verifies SHA-256 hashes of all raw data, rebuilds
-`data/processed/`, `results/` and `figures/`, and runs the tests.
+`make all` does the following:
 
-## Layout
+1. Downloads the pinned OWID file.
+2. Checks SHA-256 hashes of all raw data.
+3. Rebuilds `data/processed/`, `results/`, `figures/` and `results/key_numbers.md`.
+4. Runs the tests.
+
+## Repository map
 
 | Path | Content |
 |---|---|
-| `config.yaml` | every modelling choice and assumption |
-| `data/sources.yaml` | every external input: value, unit, year, source, where in the source, retrieval date, conversion |
-| `data/raw/` | unmodified data files (`SHA256SUMS`); `papers/` is git-ignored |
-| `src/load.py` | raw to processed tables |
-| `src/model.py` | identity and closed-form solutions |
-| `src/floor.py` | RQ2 floor triangulation, RQ3 emissions above the floor |
-| `src/frontier.py` | RQ6 wellbeing frontier and observed Aᵈᵉᵐ |
-| `src/scenarios.py` | RQ1 burn rate, RQ4 cost of existing, RQ5 required Aᵈᵉᵐ |
-| `src/montecarlo.py` | one uncertainty propagation for required Aᵈᵉᵐ |
-| `src/figures.py` | the four figures |
-| `tests/` | validation identity, closed forms, estimator checks |
+| `config.yaml` | every modelling choice: years, scenarios, frames, horizon, Monte Carlo, colour palette |
+| `data/sources.yaml` | every external input with value, unit, year, source, location in the source, retrieval date and conversion |
+| `data/raw/` | unmodified data files (`SHA256SUMS`); `papers/` is git-ignored and never committed |
+| `src/load.py` | raw data to processed tables |
+| `src/model.py` | identity and closed forms (static and path frames) |
+| `src/floor.py` | floor triangulation (RQ2) and emissions above the floor (RQ3) |
+| `src/frontier.py` | wellbeing frontier and observed Aᵈᵉᵐ (RQ6) |
+| `src/scenarios.py` | burn rate and required rates (RQ1), cost of existing (RQ4), required Aᵈᵉᵐ* (RQ5) |
+| `src/montecarlo.py` | the single uncertainty propagation, both frames |
+| `src/figures.py` | five main figures (`figures/`) and three supplementary figures (`figures/si/`) |
+| `src/keynumbers.py` | `results/key_numbers.md` |
+| `tests/` | identity, closed forms (incl. path frame vs quadrature), estimator checks |
 | `results/` | one CSV per research question, each with a `type` column (data / derived / stretched) |
+| `figures/captions.md` | captions for all figures |
 | `PLAN.md` | the approved Phase 0 plan |
 
-## Notes
-
-- Article PDFs are not redistributed. Values taken from them are recorded with section or
-  table references in `data/sources.yaml`.
-- The UN and World Happiness Report files were supplied by hand because their hosts were
-  not reachable from the build environment.
-- The three T decline rates are assumptions fixed in `config.yaml`; see the PwC entry in
-  `data/sources.yaml` for what was and was not verified.
+Article PDFs are not redistributed; values taken from them carry section or table references in
+`data/sources.yaml`.

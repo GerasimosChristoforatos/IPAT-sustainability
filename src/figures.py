@@ -159,8 +159,9 @@ def fig2_materialism(d):
     ax.barh(y, r.floor_met_GtCO2, height=0.55, color=C["floor"], edgecolor=C["surface"], lw=1, label="Floor (met)")
     ax.barh(y, r.above_floor_GtCO2, left=r.floor_met_GtCO2, height=0.55, color=C["materialism"],
             edgecolor=C["surface"], lw=1, label="Above the floor (materialism)")
-    ax.barh(y, r.unmet_floor_GtCO2, left=r.floor_met_GtCO2 + r.above_floor_GtCO2, height=0.55, facecolor=C["surface"],
-            edgecolor=C["floor"], hatch="////", lw=0.8, label="Floor not yet met (deficit)")
+    m = r.unmet_floor_GtCO2 >= 0.05
+    ax.barh(y[m.values], r.unmet_floor_GtCO2[m], left=(r.floor_met_GtCO2 + r.above_floor_GtCO2)[m], height=0.55,
+            facecolor=C["surface"], edgecolor=C["floor"], hatch="////", lw=0.8, label="Floor not yet met (deficit)")
     for yi, (_, g) in zip(y, r.iterrows()):
         end = g.floor_met_GtCO2 + g.above_floor_GtCO2 + g.unmet_floor_GtCO2
         txt = f"{g.above_floor_GtCO2:.1f} above" if g.above_floor_GtCO2 >= 0.05 else ""
@@ -194,14 +195,13 @@ def fig3_technology_alone(d):
     ax.text(0.3, H + 3.5, f"Budget not used up within the {H}-year horizon", va="center", fontsize=7, color=C["ink_secondary"])
     for ref, shade in zip(["World", "EU27", "US"], C["technology_shades"]):
         I0 = d["P"] * u.loc[ref, A_COL] * d["T0"]
-        yrs = np.array([model.years_to_exhaustion_path(B, I0, x) if x > 0 else B / I0 for x in r])
         rs = req.loc[ref, "required_rate"]
-        m = r <= rs
-        ax.plot(100 * r[m], yrs[m], color=shade, lw=2, solid_capstyle="round")
+        rr = np.linspace(0, rs, 600)
+        yrs = np.array([min(H, model.years_to_exhaustion_path(B, I0, x)) if x > 0 else B / I0 for x in rr])
+        ax.plot(100 * rr, yrs, color=shade, lw=2, solid_capstyle="round")
         ax.plot(100 * rs, H, "o", ms=6, color=shade, mec=C["surface"], mew=1, zorder=5, clip_on=False)
         lbl = {"US": "US lifestyle", "EU27": "EU27 lifestyle", "World": "World-average lifestyle"}[ref]
-        ax.text(100 * rs, H - 2.2, f"{lbl}\nneeds {_pct(rs)}", ha="center", va="top", fontsize=7)
-        ax.text(-0.3, yrs[0], f"{yrs[0]:.0f} yr", ha="right", va="center", fontsize=7, color=C["ink_secondary"])
+        ax.text(100 * rs - 0.5, H - 2.2, f"{lbl}\nneeds {_pct(rs)}", ha="right", va="top", fontsize=7)
     for k, x in RATES.items():
         ax.axvline(100 * x, color=C["ink_secondary"], lw=0.6, ls=(0, (2, 2)), zorder=0)
     _scenario_axis(ax)
@@ -229,17 +229,20 @@ def fig4_frontier(d):
     ax.scatter(s[A_COL], s.ladder, s=10, color="#9a9994", linewidths=0, zorder=2)
     x = np.logspace(np.log10(s[A_COL].min()), np.log10(s[A_COL].max()), 100)
     ax.plot(x, a + b * np.log(x), color=C["dematerialism"], lw=1.8, zorder=3)
-    ax.text(1.25e3, a + b * np.log(1.25e3) + 0.32, f"Frontier (τ = {f['tau']})", color=C["dematerialism"], fontsize=7.5,
-            rotation=0)
+    ax.text(0.02, 0.97, f"Purple line: frontier, best life evaluation at each A\n(quantile regression, τ = {f['tau']})",
+            transform=ax.transAxes, color=C["dematerialism"], fontsize=7, va="top")
     ax.axvline(d["floor"]["central"], color=C["floor"], lw=1, ls=(0, (4, 2)), zorder=1)
     ax.text(d["floor"]["central"] * 0.95, 1.75, "Aᵉˢˢ", color=C["floor"], fontsize=7.5, ha="right")
     # labelled countries: (iso, dx pts, dy pts, ha)
-    lab = {"CRI": (-6, 6, "right"), "MEX": (-6, -10, "right"), "FIN": (6, 3, "left"), "GTM": (-6, 4, "right"),
-           "IND": (6, -2, "left"), "NOR": (6, -9, "left"), "CHN": (6, -8, "left")}
-    for iso, (dx, dy, ha) in lab.items():
+    lab = {"CRI": (5.0e3, 7.55), "MEX": (5.0e3, 7.2), "GTM": (2.6e3, 6.75), "FIN": None, "IND": None, "CHN": None}
+    for iso, pos in lab.items():
         r = s[s.iso_code == iso].iloc[0]
         ax.scatter(r[A_COL], r.ladder, s=16, color=C["ink"], linewidths=0, zorder=4)
-        ax.annotate(r.country, (r[A_COL], r.ladder), textcoords="offset points", xytext=(dx, dy), ha=ha, fontsize=7)
+        if pos is None:
+            ax.annotate(r.country, (r[A_COL], r.ladder), textcoords="offset points", xytext=(6, -3), fontsize=7)
+        else:
+            ax.annotate(r.country, (r[A_COL], r.ladder), xytext=pos, ha="right", va="center", fontsize=7,
+                        arrowprops=dict(arrowstyle="-", color=C["ink_secondary"], lw=0.5, shrinkA=1, shrinkB=3))
     for ref, dy in (("US", 8), ("EU27", -11)):
         r = o.loc[ref]
         ax.annotate("", xy=(r.A_frontier, r.ladder_ref), xytext=(r.A_ref, r.ladder_ref),
@@ -313,19 +316,20 @@ def fig5_both_levers(d):
     for k in ("Ambitious", "Extreme"):
         ax.axvline(100 * RATES[k], color=C["ink_secondary"], lw=0.6, ls=(0, (2, 2)))
     _scenario_axis(ax)
-    pts = [(req.loc["technology alone (A_dem = 1)", "required_rate"], 1.0, "technology alone", (0, 9)),
-           (req.loc["both levers (observed A_dem, central)", "required_rate"], o.A_dem_observed, "both levers", (8, -12))]
-    for rr, dd, lbl, off in pts:
+    pts = [(req.loc["technology alone (A_dem = 1)", "required_rate"], 1.0, "Technology alone", (15.5, 1.6)),
+           (req.loc["both levers (observed A_dem, central)", "required_rate"], o.A_dem_observed, "Both levers", (14.5, 12))]
+    for rr, dd, lbl, pos in pts:
         ax.plot(100 * rr, dd, "o", ms=6, color=C["ink"], mec=C["surface"], mew=1, zorder=6, clip_on=False)
-        ax.annotate(f"{lbl}: {_pct(rr)}", (100 * rr, dd), textcoords="offset points", xytext=off,
-                    ha="left" if off[0] > 0 else "center", fontsize=7, fontweight="bold")
+        ax.annotate(f"{lbl}: {_pct(rr)}", (100 * rr, dd), xytext=pos, ha="left", va="center", fontsize=7,
+                    fontweight="bold", arrowprops=dict(arrowstyle="-", color=C["ink"], lw=0.6, shrinkA=2, shrinkB=4))
     ax.text(3.0, 150, "Over budget", fontsize=8, color=C["ink"])
     ax.text(18.5, 150, "Within budget", fontsize=8, color=C["ink"])
     ax.set(yscale="log", xlim=(0, 100 * CFG["frames"]["path_rate_grid_max"]), ylim=(1, 300),
            xlabel="Annual decline of T (% per year, sustained)", ylabel="Aᵈᵉᵐ, dematerialism (log scale)")
     ax.set_yticks([1, 2, 5, 10, 30, 100, 300]); ax.set_yticklabels(["1 (none)", "2", "5", "10", "30", "100", "300"])
-    ax.text(-0.09, 1.13, "a", transform=ax.transAxes, fontsize=10, fontweight="bold")
-    ax.set_title(f"US lifestyle for all, {TARGET} °C (50 %), cumulative over {H} years", loc="left", fontsize=7.5, pad=26)
+    ax.text(-0.11, 1.2, "a", transform=ax.transAxes, fontsize=10, fontweight="bold")
+    ax.text(0.0, 1.2, f"US lifestyle for all, {TARGET} °C (50 %), cumulative over {H} years", transform=ax.transAxes,
+            fontsize=7.5)
 
     # panel b: required vs observed, path frame
     bx = fig.add_subplot(gs[1, 0])
@@ -352,8 +356,8 @@ def fig5_both_levers(d):
         bx.axvline(xs, color=C["ink_secondary"], lw=0.5)
     bx.set_xscale("log")
     bx.set_xlim(0.45, 800)
-    bx.set_xticks([CAT_NONE, 1, 2, 5, 10, 30, 100, 300, CAT_FAIL])
-    bx.set_xticklabels(["none\nneeded", "1", "2", "5", "10", "30", "100", "≥300", "floor\nfails"])
+    bx.set_xticks([CAT_NONE, 1, 2, 5, 10, 30, 100, CAT_FAIL])
+    bx.set_xticklabels(["none\nneeded", "1", "2", "5", "10", "30", "100", "floor\nfails"])
     bx.minorticks_off()
     bx.set_yticks(list(ypos.values()))
     bx.set_yticklabels([f"{t} °C · {names[s]}" for (t, s) in ypos], fontsize=7)
@@ -366,12 +370,12 @@ def fig5_both_levers(d):
                Line2D([], [], marker="D", ls="", mfc=C["surface"], mec=C["ink"], ms=4.2, label="Required, EU27 lifestyle"),
                Line2D([], [], color=C["dematerialism"], lw=1.4, label=f"Observed, US {o.A_dem_observed:.1f} (band: 95 % CI)"),
                Line2D([], [], color=C["dematerialism"], lw=1, ls=(0, (3, 2)), label=f"Observed, EU27 {eu_obs:.1f}")]
-    bx.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.42, -0.2), ncol=2)
+    bx.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.42, -0.24), ncol=2)
     both = req.loc["both levers (observed A_dem, central)", "required_rate"]
     _title(fig, f"Neither lever closes the gap alone; together, the dematerialism already observed and a sustained "
                 f"{_pct(both).replace(' %/yr', ' %')} annual decline in carbon intensity keep a US lifestyle within "
                 f"the {TARGET} °C budget", width=90)
-    fig.subplots_adjust(top=0.9)
+    fig.subplots_adjust(top=0.85)
     _save(fig, "fig5_both_levers")
 
 
@@ -455,8 +459,8 @@ def s3_frames(d):
         for xs_ in (0.8, 380):
             ax.axvline(xs_, color=C["ink_secondary"], lw=0.5)
         ax.set_xscale("log"); ax.set_xlim(0.45, 800); ax.minorticks_off()
-        ax.set_xticks([CAT_NONE, 1, 3, 10, 30, 100, 300, CAT_FAIL])
-        ax.set_xticklabels(["none\nneeded", "1", "3", "10", "30", "100", "≥300", "floor\nfails"])
+        ax.set_xticks([CAT_NONE, 1, 3, 10, 30, 100, CAT_FAIL])
+        ax.set_xticklabels(["none\nneeded", "1", "3", "10", "30", "100", "floor\nfails"])
         ax.set_title(f"{ref} lifestyle", fontsize=7.5)
         ax.set_xlabel("Required Aᵈᵉᵐ*")
         ax.spines["left"].set_visible(False); ax.tick_params(axis="y", length=0)

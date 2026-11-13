@@ -101,6 +101,11 @@ pwc_nzei_2024:
   retrieved: 2026-11-13
   access: "PDF print of the PwC Ireland report page, supplied by the study author; not redistributed"
   status: partially verified
+  v2_status: >
+    v2.0 (2026-11-13): the PwC Ireland 2024 press release announced by the study author was
+    not present in data/raw/papers/ or on the main branch when v2.0 was built. The three
+    scenario rates therefore remain assumptions (config.yaml); BAU stays at 1.5 %/yr rather
+    than the 1.43 % average, which could not be sourced from the supplied files.
   values:
     rate_2023: {value: 0.0102, unit: "per year", where: "opening paragraph", type: data, verified: true}
     rate_1p5c: {value: 0.204, unit: "per year", where: "opening paragraph", type: data, verified: true}

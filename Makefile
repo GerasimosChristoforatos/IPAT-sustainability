@@ -20,6 +20,7 @@ results: data
 
 figures: results
 	$(PY) src/figures.py
+	$(PY) src/keynumbers.py
 
 test:
 	$(PY) -m unittest discover -s tests -v
