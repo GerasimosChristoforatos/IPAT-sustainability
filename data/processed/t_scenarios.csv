@@ -1,8 +1,8 @@
 scenario,kind,rate,T,note,type
 Today,observed,0.0,0.2879900631786629,"world T, 2022",derived
-BAU,rate endpoint,0.015,0.18862183130005294,1.5%/yr to 2050,derived (rate is an assumption)
-Ambitious,rate endpoint,0.069,0.03890169912385185,6.9%/yr to 2050,derived (rate is an assumption)
-Extreme,rate endpoint,0.115,0.009414322740347756,11.5%/yr to 2050,derived (rate is an assumption)
+BAU,rate endpoint,0.015,0.18862183130005294,Historical average (BAU): 1.5%/yr to 2050,derived (rate is an assumption)
+Ambitious,rate endpoint,0.069,0.03890169912385185,Ambitious (2 °C-consistent): 6.9%/yr to 2050,derived (rate is an assumption)
+Extreme,rate endpoint,0.115,0.009414322740347756,Extreme (faster than any G20 country's best single year): 11.5%/yr to 2050,derived (rate is an assumption)
 Best national,national anchor,,0.072129271837832,"Norway (A >= world mean, population >= 1,000,000)",derived
 Second-best national,national anchor,,0.1352267024518168,"Sweden (A >= world mean, population >= 1,000,000)",derived
 "Lowest national, unrestricted",national anchor,,0.072129271837832,Norway,derived

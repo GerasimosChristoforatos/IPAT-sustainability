@@ -108,6 +108,48 @@ class TestClosedForms(unittest.TestCase):
         self.assertAlmostEqual(model.years_to_exhaustion_static(500.0, 40.0), 12.5)
 
 
+class TestPathFrame(unittest.TestCase):
+    """Closed form of the path frame against direct numerical integration."""
+    P, A_ref, A_ess, T0, H = 8.0e9, 57_000.0, 6_350.0, 0.27, 50.0
+
+    def test_cumulative_closed_form_matches_quadrature(self):
+        from scipy.integrate import quad
+        for r in (0.0, 0.015, 0.069, 0.115, 0.22):
+            for A_dem in (1.0, 3.4, 1e6):
+                A_mat = self.A_ref - self.A_ess
+                integrand = lambda t: model.impact(self.P, self.A_ess, A_mat, A_dem, self.T0 * (1 - r) ** t)
+                num, _ = quad(integrand, 0, self.H, epsabs=0, epsrel=1e-12, limit=200)
+                closed = model.cumulative_impact_path(self.P, self.A_ess, A_mat, A_dem, self.T0, r, self.H)
+                self.assertAlmostEqual(closed / num, 1.0, places=9, msg=f"r={r}, A_dem={A_dem}")
+
+    def test_required_dem_path_exhausts_budget_exactly(self):
+        B = 499 * model.KG_PER_GT
+        d, status = model.required_dem_path(self.A_ref, self.A_ess, B, self.P, self.T0, 0.069, self.H)
+        self.assertEqual(status, model.REQUIRED)
+        cum = model.cumulative_impact_path(self.P, self.A_ess, self.A_ref - self.A_ess, d, self.T0, 0.069, self.H)
+        self.assertAlmostEqual(cum / B, 1.0, places=12)
+
+    def test_static_is_path_with_constant_T(self):
+        B = 499 * model.KG_PER_GT
+        a = model.required_dem_path(self.A_ref, self.A_ess, B, self.P, self.T0, 0.0, self.H)[0]
+        b = model.required_dem(self.A_ref, self.A_ess, model.allowance(B, self.H), self.P, self.T0)[0]
+        self.assertAlmostEqual(a, b, places=12)
+
+    def test_required_rate_inverts_path_factor(self):
+        I0, B = 124e12, 499e12
+        r = model.required_rate_path(I0, B, self.H)
+        self.assertAlmostEqual(I0 * model.path_factor(r, self.H) / B, 1.0, places=8)
+        self.assertEqual(model.required_rate_path(1e12, B, self.H), 0.0)
+
+    def test_vectorised_path_factor(self):
+        import numpy as np
+        import montecarlo
+        r = np.array([0.0, 0.015, 0.115]); H = np.array([25.0, 50.0, 100.0])
+        v = montecarlo.path_factor_vec(r, H)
+        for i in range(3):
+            self.assertAlmostEqual(v[i], model.path_factor(r[i], H[i]), places=12)
+
+
 class TestMonteCarlo(unittest.TestCase):
     def test_vectorised_matches_scalar(self):
         import numpy as np

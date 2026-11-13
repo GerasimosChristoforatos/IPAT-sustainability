@@ -1,25 +1,49 @@
-reference,target_degC,T_scenario,draws,P_label,A_dem_required_median,A_dem_required_p05,A_dem_required_p95,prob_required_le_observed,prob_floor_fails,prob_none_needed,type,A_dem_observed,A_dem_observed_ci_low,A_dem_observed_ci_high
-US,1.5,BAU,10000,now,inf,inf,inf,0.0,0.9999,0.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,1.5,Ambitious,10000,now,41.490208031000705,6.209658475075236,inf,0.0023,0.34,0.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,1.5,Extreme,10000,now,2.0069340713049817,0.9401884689567622,4.898491338948165,0.8391,0.0,0.0664,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,1.5,Pooled (rate uniform),10000,now,120.57948003146869,1.9708489121902684,inf,0.1387,0.4767,0.0025,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-EU27,1.5,BAU,10000,now,inf,inf,inf,0.0,0.9999,0.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,1.5,Ambitious,10000,now,25.96354734450116,3.8830144266999014,inf,0.0167,0.34,0.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,1.5,Extreme,10000,now,1.2509176386080898,0.584984922429127,3.0534509783746415,0.9415,0.0,0.3293,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,1.5,Pooled (rate uniform),10000,now,75.45472367004184,1.2278241731999386,inf,0.1969,0.4767,0.0261,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-US,1.7,BAU,10000,now,inf,13.37341298578889,inf,0.0,0.5997,0.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,1.7,Ambitious,10000,now,2.2942988320918163,1.1825328244234328,4.65539574408242,0.8213,0.0,0.0162,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,1.7,Extreme,10000,now,0.4539908561043455,0.2558260027450793,0.767752817473179,1.0,0.0,0.9994,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,1.7,Pooled (rate uniform),10000,now,2.610009007346675,0.47288004260249433,inf,0.5645,0.0642,0.236,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-EU27,1.7,BAU,10000,now,inf,8.373187618394192,inf,0.0,0.5997,0.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,1.7,Ambitious,10000,now,1.4303950257002016,0.7366838929930806,2.9006616819197917,0.9547,0.0,0.1904,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,1.7,Extreme,10000,now,0.2829098922280593,0.15928210755172847,0.48005987496259533,1.0,0.0,1.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,1.7,Pooled (rate uniform),10000,now,1.6258994352338343,0.29404327315565515,inf,0.6343,0.0642,0.3679,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-US,2.0,BAU,10000,now,8.61269303158427,3.4690139513182583,54.264825465168016,0.0468,0.0153,0.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,2.0,Ambitious,10000,now,0.9480690343895506,0.5302943299850242,1.636755871551641,1.0,0.0,0.5585,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,2.0,Extreme,10000,now,0.20988758235469587,0.1219375494571217,0.34095591490577615,1.0,0.0,1.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-US,2.0,Pooled (rate uniform),10000,now,1.0616449349878556,0.22048859006347676,7.772848034254844,0.8158,0.0004,0.4831,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",3.4232130678004813,2.381186346421686,5.679417604899164
-EU27,2.0,BAU,10000,now,5.381414019406778,2.170761435008533,33.67523473799016,0.1526,0.0153,0.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,2.0,Ambitious,10000,now,0.5910917998585771,0.33046124581329334,1.0192436512340282,1.0,0.0,0.9424,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,2.0,Extreme,10000,now,0.13079296618835928,0.07586737242647945,0.21257962675743372,1.0,0.0,1.0,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
-EU27,2.0,Pooled (rate uniform),10000,now,0.6620646195478764,0.13792621068423686,4.838841428266284,0.878,0.0004,0.6166,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)",2.943869518077314,2.048842111127544,5.340563910765375
+frame,reference,target_degC,T_scenario,draws,P_label,A_dem_required_median,A_dem_required_p05,A_dem_required_p95,prob_required_le_observed,prob_floor_fails,prob_none_needed,A_dem_observed,type
+path,EU27,1.5,BAU,10000,now,inf,inf,inf,0.0,1.0,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,1.5,Ambitious,10000,now,inf,42.103431311511244,inf,0.0,0.8623,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,1.5,Extreme,10000,now,26.20387359874341,6.2796566511998835,inf,0.0,0.3188,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,1.5,Pooled (rate uniform),10000,now,inf,12.497254126899108,inf,0.0,0.7931,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,1.7,BAU,10000,now,inf,10.737971254975346,inf,0.0,0.565,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,1.7,Ambitious,10000,now,3.001674888114401,2.092398861767386,4.6557777131563585,0.476,0.0,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,1.7,Extreme,10000,now,1.4549639741993228,1.077339584686468,1.9550137128179719,1.0,0.0,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,1.7,Pooled (rate uniform),10000,now,3.2887406755468156,1.3701166875202035,575.2447502772515,0.4484,0.0481,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,2.0,BAU,10000,now,4.945276201924749,2.5232418259584013,12.750409098010351,0.1093,0.0,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,2.0,Ambitious,10000,now,1.0871339968365694,0.8530703728775889,1.3779870924892181,1.0,0.0,0.3509,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,2.0,Extreme,10000,now,0.5990631478244767,0.47830867614288564,0.7359457948154486,1.0,0.0,1.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,EU27,2.0,Pooled (rate uniform),10000,now,1.1500021277030257,0.580962510300438,4.147218896522726,0.8796,0.0,0.4107,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,1.5,BAU,10000,now,inf,inf,inf,0.0,1.0,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,1.5,Ambitious,10000,now,inf,66.87382488391418,inf,0.0,0.8623,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,1.5,Extreme,10000,now,41.86996142405589,10.008709648065352,inf,0.0,0.3188,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,1.5,Pooled (rate uniform),10000,now,inf,19.941897385025733,inf,0.0,0.7931,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,1.7,BAU,10000,now,inf,17.111861863370482,inf,0.0,0.565,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,1.7,Ambitious,10000,now,4.802631922980222,3.3358514685176135,7.529805021382723,0.0757,0.0,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,1.7,Extreme,10000,now,2.328028824582845,1.7285796373041198,3.144500103861795,0.9976,0.0,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,1.7,Pooled (rate uniform),10000,now,5.267082454383147,2.1927493600825,924.3106717018647,0.2758,0.0481,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,2.0,BAU,10000,now,7.921257957455384,4.045576909413108,20.563277671864313,0.0172,0.0,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,2.0,Ambitious,10000,now,1.7405772833291424,1.3668055689401883,2.2130320857701244,1.0,0.0,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,2.0,Extreme,10000,now,0.9618186842985298,0.766513427316638,1.1808016197855735,1.0,0.0,0.5916,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+path,US,2.0,Pooled (rate uniform),10000,now,1.8448293551837351,0.9341976237459001,6.637771670729922,0.7829,0.0,0.0794,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,1.5,BAU,10000,now,inf,inf,inf,0.0,0.9999,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,1.5,Ambitious,10000,now,25.96354734450116,3.8830144266999014,inf,0.0167,0.34,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,1.5,Extreme,10000,now,1.2509176386080898,0.584984922429127,3.0534509783746415,0.9415,0.0,0.3293,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,1.5,Pooled (rate uniform),10000,now,75.45472367004184,1.2278241731999386,inf,0.1969,0.4767,0.0261,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,1.7,BAU,10000,now,inf,8.373187618394192,inf,0.0,0.5997,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,1.7,Ambitious,10000,now,1.4303950257002016,0.7366838929930806,2.9006616819197917,0.9547,0.0,0.1904,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,1.7,Extreme,10000,now,0.2829098922280593,0.15928210755172847,0.48005987496259533,1.0,0.0,1.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,1.7,Pooled (rate uniform),10000,now,1.6258994352338343,0.29404327315565515,inf,0.6343,0.0642,0.3679,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,2.0,BAU,10000,now,5.381414019406778,2.170761435008533,33.67523473799016,0.1526,0.0153,0.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,2.0,Ambitious,10000,now,0.5910917998585771,0.33046124581329334,1.0192436512340282,1.0,0.0,0.9424,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,2.0,Extreme,10000,now,0.13079296618835928,0.07586737242647945,0.21257962675743372,1.0,0.0,1.0,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,EU27,2.0,Pooled (rate uniform),10000,now,0.6620646195478764,0.13792621068423686,4.838841428266284,0.878,0.0004,0.6166,2.943869518077314,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,1.5,BAU,10000,now,inf,inf,inf,0.0,0.9999,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,1.5,Ambitious,10000,now,41.490208031000705,6.209658475075236,inf,0.0023,0.34,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,1.5,Extreme,10000,now,2.0069340713049817,0.9401884689567622,4.898491338948165,0.8391,0.0,0.0664,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,1.5,Pooled (rate uniform),10000,now,120.57948003146869,1.9708489121902684,inf,0.1387,0.4767,0.0025,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,1.7,BAU,10000,now,inf,13.37341298578889,inf,0.0,0.5997,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,1.7,Ambitious,10000,now,2.2942988320918163,1.1825328244234328,4.65539574408242,0.8213,0.0,0.0162,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,1.7,Extreme,10000,now,0.4539908561043455,0.2558260027450793,0.767752817473179,1.0,0.0,0.9994,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,1.7,Pooled (rate uniform),10000,now,2.610009007346675,0.47288004260249433,inf,0.5645,0.0642,0.236,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,2.0,BAU,10000,now,8.61269303158427,3.4690139513182583,54.264825465168016,0.0468,0.0153,0.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,2.0,Ambitious,10000,now,0.9480690343895506,0.5302943299850242,1.636755871551641,1.0,0.0,0.5585,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,2.0,Extreme,10000,now,0.20988758235469587,0.1219375494571217,0.34095591490577615,1.0,0.0,1.0,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"
+static,US,2.0,Pooled (rate uniform),10000,now,1.0616449349878556,0.22048859006347676,7.772848034254844,0.8158,0.0004,0.4831,3.4232130678004813,"derived (scenario-weighted; A_ess, A_dem, I_pl are stretched)"

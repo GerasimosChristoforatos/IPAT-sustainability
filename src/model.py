@@ -82,6 +82,47 @@ def cumulative_path(I_start, rate, years):
     return I_start * (1.0 - math.exp(-k * years)) / k
 
 
+def path_factor(rate, horizon_yr):
+    """Effective years of emissions at the starting rate over `horizon_yr` when T falls by
+    `rate` per year:  F = integral_0^H e^(-k t) dt = (1 - e^(-k H)) / k,  k = -ln(1 - rate).
+    F = H for rate = 0. Cumulative emissions over H are I_start * F."""
+    if rate == 0:
+        return float(horizon_yr)
+    k = decay_constant(rate)
+    return (1.0 - math.exp(-k * horizon_yr)) / k
+
+
+def cumulative_impact_path(P, A_ess, A_mat, A_dem, T0, rate, horizon_yr):
+    """Cumulative CO2 [kg] over the horizon:  P (A_ess + A_mat/A_dem) T0 F(rate, H)."""
+    return impact(P, A_ess, A_mat, A_dem, T0) * path_factor(rate, horizon_yr)
+
+
+def required_dem_path(A_ref, A_ess, budget_kg, P, T0, rate, horizon_yr):
+    """A_dem* such that cumulative emissions over H equal the remaining budget.
+
+    Same closed form as the static case with I_pl/(P*T) replaced by B/(P*T0*F):
+        A_dem* = A_mat / ( B/(P*T0*F) - A_ess ).
+    Returns (value, status) as required_dem."""
+    return required_dem(A_ref, A_ess, budget_kg / path_factor(rate, horizon_yr), P, T0)
+
+
+def equal_share_A_path(budget_kg, P, T0, rate, horizon_yr):
+    """Per-person consumption whose cumulative emissions over H exactly use the budget."""
+    return budget_kg / (P * T0 * path_factor(rate, horizon_yr))
+
+
+def required_rate_path(I_start, budget_kg, horizon_yr, r_max=0.999):
+    """Smallest constant annual decline rate of T keeping cumulative emissions over H within
+    the budget. 0 if the budget holds without decline; nan if not reachable below r_max."""
+    from scipy.optimize import brentq
+    if I_start * horizon_yr <= budget_kg:
+        return 0.0
+    f = lambda r: I_start * path_factor(r, horizon_yr) - budget_kg
+    if f(r_max) > 0:
+        return math.nan
+    return brentq(f, 1e-9, r_max, xtol=1e-10)
+
+
 def years_to_exhaustion_path(budget_kg, I_start, rate):
     """Years until the budget is spent when I declines exponentially.
     math.inf if cumulative emissions never reach the budget (I_start/k <= budget)."""

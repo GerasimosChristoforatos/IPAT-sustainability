@@ -3,7 +3,7 @@
 
 years:
   activity: 2022          # latest year with both Maddison GDP and consumption CO2 (OWID)
-  t_scenario_end: 2050    # T scenarios are endpoints in this year
+  t_scenario_end: 2050    # static frame: T scenarios are endpoints in this year
   budget_base: 2026       # remaining carbon budget counted from 1 Jan of this year
 
 units:                    # reference units for the validation identity
@@ -14,11 +14,21 @@ units:                    # reference units for the validation identity
 eu27_iso: [AUT, BEL, BGR, HRV, CYP, CZE, DNK, EST, FIN, FRA, DEU, GRC, HUN, IRL,
            ITA, LVA, LTU, LUX, MLT, NLD, POL, PRT, ROU, SVK, SVN, ESP, SWE]
 
-t_scenarios:              # annual rate of decline of T, applied from years.activity
-  # ASSUMPTIONS fixed by the study brief; provenance and caveats under pwc_nzei_2024 in sources.yaml
-  BAU:       {rate: 0.015}   # approx. historical global rate
-  Ambitious: {rate: 0.069}   # PwC: rate consistent with 2 degC
-  Extreme:   {rate: 0.115}   # PwC: no G20 country above this in a single year since 2000
+t_scenarios:              # annual rate of decline of T
+  # ASSUMPTIONS fixed by the study brief; provenance and verification status under
+  # pwc_nzei_2024 in sources.yaml (the PwC press release had not been supplied at v2.0)
+  BAU:       {rate: 0.015, label: "Historical average (BAU)"}
+  Ambitious: {rate: 0.069, label: "Ambitious (2 °C-consistent)"}
+  Extreme:   {rate: 0.115, label: "Extreme (faster than any G20 country's best single year)"}
+
+frames:
+  # main: cumulative emissions along a path of declining T against the cumulative budget
+  # robustness: annual impact at the 2050 endpoint T against a flat allowance (budget / horizon)
+  main: path
+  robustness: static
+  path_t0_rule: "T at budget base year = T(activity year) declining at the BAU rate over the gap years"
+  path_rate_grid_max: 0.25        # x-range of rate figures (US needs ~22 %/yr; see REPORT)
+  path_rate_grid_points: 251
 
 best_national_t:          # "world at the best current national T" anchor (decision D4)
   min_population: 1000000   # persons
@@ -74,3 +84,17 @@ montecarlo:
   interval: [0.05, 0.95]
 
 seed: 20261113
+
+palette:                  # one colour per concept, all figures (validated: dataviz validator, light surface)
+  allowance: "#0b0b0b"    # I_pl, always a black line
+  floor: "#2a78d6"        # A_ess
+  materialism: "#eb6834"  # A_mat
+  technology: "#1baf7a"   # T
+  dematerialism: "#8a2b8f"  # A_dem (all-pairs CVD dE >= 9.2, normal dE >= 22 vs the others)
+  technology_shades: ["#7fd3b0", "#1baf7a", "#0e6b4a"]   # lifestyles World, EU27, US (light to dark)
+  ink: "#0b0b0b"
+  ink_secondary: "#52514e"
+  grid: "#e4e3df"
+  surface: "#ffffff"
+
+figure_size_mm: {single: 89, double: 183}
